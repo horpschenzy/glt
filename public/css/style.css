@@ -1,0 +1,444 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito);
+
+
+
+.btn-sm, .btn-group-sm > .btn {
+    font-size: 0.9rem !important;
+}
+
+.header-navbar .navbar-container .bookmark-wrapper ul.nav li > a.nav-link {
+    padding: 1.9rem 0.5rem 1.35rem;
+}
+
+.main-menu .navbar-header .navbar-brand .brand-text {
+    padding-left: 0rem;
+}
+.stat-color-total{
+    color: #000 !important;
+} 
+.stat-color-paid{
+    color: #5353ff !important;
+}
+.stat-color-pending{
+    color: #ff922a  !important;
+}
+.stat-color-failed{
+    color: #ea5455 !important;
+}
+
+ul.nav li.dropdown:hover ul.dropdown-menu {
+    display: block;
+}
+
+iframe{
+    overflow:hidden;
+}
+
+
+.main-menu .navbar-header .navbar-brand .brand-logo {
+    background: url(/images/logo/logo.png?c4ab1f1147d7d70ed03b795c6829d77e) no-repeat;
+    height: 30px;
+    width: 35px;
+    background-size: contain;
+}
+
+
+    .card .card-header {
+        padding: 1.5rem 1rem 0;
+    }
+
+    .btn:disabled {
+        position: relative;
+    }
+
+    .btn-md {
+        padding: 0.7rem 1.3rem;
+    }
+
+
+    .avatar {
+      margin: 0px; 
+    }
+
+    .list-group-item {
+        padding: 1.2rem 1.25rem;
+    }
+
+    .btn-lg, .btn-group-lg > .btn {
+        border-radius: 0.4rem;
+    }
+
+    .badge[class*='badge-'] i {
+        vertical-align: baseline;
+    }
+
+    .invalid-feedback {
+        display: block;
+    }
+
+    .modal-backdrop {
+        width: 100%;
+        height: 100%;
+        background-color: #22292f;
+    }
+
+    html {
+        font-size: 14px;
+        height: 100%;
+        letter-spacing: .01rem;
+        }
+
+    
+
+td:first-child, th:first-child { padding-left: 40px; }
+
+.list-group .list-group-item i {
+    font-size: 1rem;
+}
+
+table.dataTable thead tr {
+    background-color: #fff;
+}
+
+table.dataTable thead th, table.dataTable thead td, table.dataTable tfoot th, table.dataTable tfoot td {
+    border-bottom: 1px solid #f8f8f8;
+    border-top: 0;
+}
+
+
+.app-content.content {
+    min-height: 600px;
+}
+
+
+.modal-xl {
+    max-width: 70%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.picker {
+    width: unset;
+    text-align: start;
+    position: unset;
+}
+
+label {
+    margin-bottom: 3px;
+}
+.pend{
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.list-group .list-group-item {
+    line-height: 1.5;
+}
+
+
+.filter-margin input, .filter-margin select  {
+    margin: 5px;
+}
+
+.form-control {
+    margin: 0px;
+}
+
+.ac-input input, .ac-input select {
+    letter-spacing: .25em;
+    color: #4a4a4a;
+    width: 100%;
+    display: block;
+    line-height: 20px;
+    font-weight: 600;
+}
+
+.ac-input2 input, .ac-input select {
+    letter-spacing: .95em;
+    color: #4a4a4a;
+    width: 100%;
+    display: block;
+    line-height: 20px;
+    font-weight: 600;
+}
+
+.ac-input2{
+    letter-spacing: .95em;
+    color: #4a4a4a;
+    width: 100%;
+    display: block;
+    line-height: 20px;
+    font-weight: 600;
+}
+
+
+.dropdown i {
+    margin-right: 0rem;
+}
+
+
+label {
+    margin-bottom: 5px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+
+
+#scroll{ overflow-y:scroll !important;}
+
+.dropdown-toggle::after {
+    left: .414rem;
+}
+.space{
+  margin-top: 20px;
+}
+.dropdown .dropdown-menu .dropdown-item, .dropup .dropdown-menu .dropdown-item, .dropright .dropdown-menu .dropdown-item, .dropleft .dropdown-menu .dropdown-item {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.dropify-wrapper .dropify-preview {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    background-color: #FFF;
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+.dropify-wrapper .dropify-preview .dropify-render img {
+    -webkit-transform: translate(3.5%); 
+    transform: translate(3.5%);
+}
+.modal-backdrop {
+    width: 100%;
+    height: 100%;
+}
+
+.searchbox{
+    width: 300px;
+}
+
+.fa-spin:focus {
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+    display: none;
+}
+
+.modal-xl {
+    max-width: 74%;
+    margin-left: 13%;
+    margin-right: 13%;
+}
+
+tr {
+    cursor: pointer;
+}
+
+.fade-scale {
+    transform: scale(0);
+    opacity: 0;
+    -webkit-transition: all .25s linear;
+    -o-transition: all .25s linear;
+    transition: all .25s linear;
+    }
+    
+.fade-scale.in {
+    opacity: 1;
+    transform: scale(1);
+    }
+
+@media only screen and (max-width: 600px) {
+       .biztitle{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+       }
+}
+
+.table td {
+    padding: 1rem 0.6rem ;
+    vertical-align: middle;
+}
+
+
+form-control {
+    font-size: 0.76rem;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 100;
+}
+
+td:first-child, th:first-child {
+    padding-left: 30px;
+}
+
+
+html, body{
+    zoom: 95%;
+}
+
+
+
+
+/* section for scroll start */
+.scroll-area {
+    position: relative;
+    margin: auto;
+    width: 600px;
+    height: 400px;
+  }
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 4;
+    top: 0;
+    left: 0;
+    background-color:  #f1f1f1;
+    /* overflow-x: hidden; */
+    transition: 0.5s;
+    /* padding-top: 60px; */
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+@media only screen and (max-width: 800px) {
+::-webkit-scrollbar {
+    width: 10px;
+  }
+::-moz-appearance-scrollbar {
+    width: 10px;
+  } 
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px lightgrey; 
+    border-radius: 5px;
+  }
+  ::-moz-appearance-scrollbar-track {
+    box-shadow: inset 0 0 5px lightgrey; 
+    border-radius: 5px;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: lightgrey; 
+  }
+  ::-moz-appearance-scrollbar-thumb {
+    background: lightgrey; 
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: lightgrey; 
+  }
+  ::-moz-appearance-scrollbar-thumb:hover {
+    background: lightgrey; 
+  }
+  }
+  @media only screen and (min-width: 992px) {
+    ::-webkit-scrollbar {
+        width: 10px;
+      }
+    ::-moz-appearance-scrollbar {
+        width: 10px;
+      } 
+      /* Track */
+      ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px lightgrey; 
+        border-radius: 5px;
+      }
+      ::-moz-appearance-scrollbar-track {
+        box-shadow: inset 0 0 5px lightgrey; 
+        border-radius: 5px;
+      }
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: lightgrey; 
+      }
+      ::-moz-appearance-scrollbar-thumb {
+        background: lightgrey; 
+      }
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: lightgrey; 
+      }
+      ::-moz-appearance-scrollbar-thumb:hover {
+        background: lightgrey; 
+      }
+  }
+
+  @media only screen and (min-width: 1200px) {
+    ::-webkit-scrollbar {
+        width: 10px;
+      }
+    ::-moz-appearance-scrollbar {
+        width: 10px;
+      } 
+      /* Track */
+      ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px lightgrey; 
+        border-radius: 5px;
+      }
+      ::-moz-appearance-scrollbar-track {
+        box-shadow: inset 0 0 5px lightgrey; 
+        border-radius: 5px;
+      }
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: lightgrey; 
+      }
+      ::-moz-appearance-scrollbar-thumb {
+        background: lightgrey; 
+      }
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: lightgrey; 
+      }
+      ::-moz-appearance-scrollbar-thumb:hover {
+        background: lightgrey; 
+      }
+
+      @-moz-document url-prefix() { 
+        ::-webkit-scrollbar {
+            width: 10px;
+          }
+        ::-moz-appearance-scrollbar {
+            width: 10px;
+          } 
+          /* Track */
+          ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px lightgrey; 
+            border-radius: 5px;
+          }
+          ::-moz-appearance-scrollbar-track {
+            box-shadow: inset 0 0 5px lightgrey; 
+            border-radius: 5px;
+          }
+          /* Handle */
+          ::-webkit-scrollbar-thumb {
+            background: lightgrey; 
+          }
+          ::-moz-appearance-scrollbar-thumb {
+            background: lightgrey; 
+          }
+          /* Handle on hover */
+          ::-webkit-scrollbar-thumb:hover {
+            background: lightgrey; 
+          }
+          ::-moz-appearance-scrollbar-thumb:hover {
+            background: lightgrey; 
+          }
+      }
+
+  }
+/* section foir scroll ends */
