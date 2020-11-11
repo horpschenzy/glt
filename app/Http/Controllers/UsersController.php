@@ -6,11 +6,11 @@ use App\Models\Extension;
 use App\Models\Member;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 use Validator;
-use Auth;
 class UsersController extends Controller
 {
 
@@ -18,7 +18,7 @@ class UsersController extends Controller
     {
         $extensions = Extension::all();
         $roles = Role::all();
-        if (session('extension_id') == 'glt') {
+        if (session('extension_id') == 'glt' || Auth::user()->roles[0]->name == 'super-admin') {
             $users = User::with('extension')->with('roles')->get();
         }else{
             $users = User::with('extension')->with('roles')->where('extension_id',session('extension_id'))->get();
@@ -62,13 +62,11 @@ class UsersController extends Controller
                             'status' => $request->status,
                             'role_id' => $request->role_id
                         ]);
-        
+
             if($user->member_id){
                 Member::where('id', $user->member_id)->update([
-                    'name' => $request->name,
-                    'username' => $request->username,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
+                    'email_address' => $request->email,
+                    'phone_number' => $request->phone,
                     'role_id' => $request->role_id,
                 ]);
             }

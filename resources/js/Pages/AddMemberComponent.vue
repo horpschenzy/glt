@@ -1,7 +1,6 @@
 <template>
     <layout>
         <title-bar :name="compoName"></title-bar>
-
         <section class="users-edit">
             <div class="card">
                 <div class="card-content">
@@ -89,18 +88,18 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6 mb-3">
-                                                        <label for="state">State</label> 
+                                                        <label for="state">State</label>
                                                         <select class="form-control" required v-model="form.state">
                                                             <option value="">Select State</option>
                                                             <option v-for="(state, key) in states" :key ="key"  :value="state">{{ state }}</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-6 mb-3">
-                                                        <label for="city">City</label> 
+                                                        <label for="city">City</label>
                                                         <input type="text" id="City" placeholder="City" v-model="form.city" class="form-control">
                                                     </div>
                                                     <div class="col-md-6 mb-3">
-                                                        <label for="validationTooltip05">Zip Code</label> 
+                                                        <label for="validationTooltip05">Zip Code</label>
                                                         <input type="text" id="Zipcode" placeholder="Zip Code" name="Zipcode" v-model="form.zipcode" class="form-control">
                                                     </div>
                                                 </div>
@@ -132,10 +131,10 @@
                                             <div class="form-group">
                                                 <label for="pictureFile">Picture</label>
                                                 <div class="custom-file">
-                                                    <input type="file" id="pictureFile" 
-                                                            class="custom-file-input" 
-                                                            accept="image/*" 
-                                                            data-default-file="" 
+                                                    <input type="file" id="pictureFile"
+                                                            class="custom-file-input"
+                                                            accept="image/*"
+                                                            data-default-file=""
                                                             data-height="200"
                                                             data-max-file-size="5M"
                                                             data-width="100"
@@ -146,7 +145,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Address</label>
-                                                <textarea v-model="form.address" id="Address" rows="5" value="" class="form-control"></textarea>                                            
+                                                <textarea v-model="form.address" id="Address" rows="5" value="" class="form-control"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -289,7 +288,7 @@
                                             </div>
 
                                         </div>
-                                        
+
                                     </div>
                                     <div class="col-md-12 col-12">
                                         <button type="submit" class=" float-right btn btn-primary mr-1 mb-1 waves-effect waves-light">Save and Continue</button>
@@ -501,16 +500,16 @@ export default {
     methods: {
         onImageChange(e) {
                 let files = e.target.files || e.dataTransfer.files;
-             
+
                     return this.createImage(files[0]);
-              
+
             },
         createImage(file) {
             let reader = new FileReader();
             reader.onload = (e) => {
                 this.form.image = e.target.result;
             };
-            
+
             reader.readAsDataURL(file);
         },
         submit(){
@@ -538,9 +537,9 @@ export default {
             }
             else{
                 this.states = ['Texas'];
-            } 
+            }
         },
-    
+
     },
 
 }

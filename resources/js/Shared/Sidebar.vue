@@ -13,40 +13,43 @@
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                 <li class="nav-item">
-                    <inertia-link href="/dashboard">
+                    <inertia-link href="/dashboard" v-if="is('admin | head-of-ministry | ahom | super-admin')">
                         <i class="feather icon-home"></i><span class="menu-title" data-i18n="">Dashboard</span>
                     </inertia-link>
                 </li>
                 <li class="nav-item ">
-                    <inertia-link href="/extension">
+                    <inertia-link href="/extension" v-if="is('super-admin')">
                         <i class="feather icon-map"></i><span class="menu-title" data-i18n="">Extension</span>
                     </inertia-link>
                 </li>
-                <li class="nav-item">
-
+                <li class="nav-item" v-if="is('super-admin')">
                         <inertia-link href="/members" class="">
                             <i class="feather icon-user-plus"></i><span class="menu-title" data-i18n="">Member</span>
                         </inertia-link>
                 </li>
+                <li class="nav-item" v-if="is('admin | head-of-ministry | ahom | follow-up')">
+                        <inertia-link href="/members" class="">
+                            <i class="feather icon-user-plus"></i><span class="menu-title" data-i18n="">Guest</span>
+                        </inertia-link>
+                </li>
 
                 <li class="nav-item">
-                    <inertia-link href="/ministry"><i class="feather icon-shield"></i><span class="menu-title" data-i18n="">Ministry</span></inertia-link>
+                    <inertia-link v-if="is('super-admin')" href="/ministry"><i class="feather icon-shield"></i><span class="menu-title" data-i18n="">Ministry</span></inertia-link>
                 </li>
                 <li class="nav-item">
 
-                    <inertia-link href="/unit"><i class="feather icon-play"></i>
+                    <inertia-link v-if="is('super-admin')" href="/unit"><i class="feather icon-play"></i>
                         <span class="menu-title" data-i18n="">Unit</span></inertia-link>
                 </li>
 
                 <li class="nav-item">
-
-                    <inertia-link href="/users" class="">
+                    <inertia-link  href="/users" class="" v-if="is('admin | super-admin')">
                         <i class="feather icon-user-plus"></i><span class="menu-title" data-i18n="">Users</span>
                     </inertia-link>
                 </li>
 
                 <li class="nav-item">
-                    <inertia-link href="/roles">
+                    <inertia-link v-if="is('super-admin')" href="/roles">
                         <i class="feather icon-shield"></i>
                         <span class="menu-title" data-i18n="">ACL</span>
                     </inertia-link>

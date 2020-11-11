@@ -2,15 +2,17 @@
 
 namespace App;
 
+use App\Models\Member;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-
+use LaravelAndVueJS\Traits\LaravelPermissionToVueJS;
 class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
+    use LaravelPermissionToVueJS;
     /**
      * The attributes that are mass assignable.
      *
@@ -41,5 +43,9 @@ class User extends Authenticatable
     public function extension()
     {
         return $this->belongsTo('App\Models\Extension');
+    }
+
+    public  function members(){
+        return $this->belongsToMany(Member::class);
     }
 }

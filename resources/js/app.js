@@ -2,7 +2,8 @@ require('./bootstrap')
 import { InertiaApp } from '@inertiajs/inertia-vue'
 import Vue from 'vue'
 import VueSweetalert2 from 'vue-sweetalert2';
-
+import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs';
+Vue.use(LaravelPermissionToVueJS);
 Vue.use(InertiaApp)
 Vue.use(VueSweetalert2);
 const app = document.getElementById('app')

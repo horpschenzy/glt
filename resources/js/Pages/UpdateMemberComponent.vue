@@ -433,7 +433,7 @@
                                                 </div>
                                             </fieldset>
                                         </div>
-                                        <div class="col-12 col-sm-6">
+                                        <div class="col-12 col-sm-6" v-if="is('super-admin')">
                                             <div class="form-group">
                                                 <div class="controls">
                                                     <label> Current Extention</label>
@@ -482,7 +482,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" v-if="is('super-admin | admin')">
                                                 <div class="controls">
                                                     <label> Assign Role</label>
                                                     <select class="form-control" v-model="form.role_id">

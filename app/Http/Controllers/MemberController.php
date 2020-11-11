@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Follow;
+use Illuminate\Support\Facades\DB;
 use URL;
 use Auth;
 use Validator;
 use App\Models\Extension;
+use App\Models\Feedback;
 use App\Models\Ministry;
 use App\Models\Member;
 use App\Models\Unit;
@@ -14,22 +17,43 @@ use Inertia\Inertia;
 use PragmaRX\Countries\Package\Countries;
 use Intervention\Image\ImageManagerStatic as Image;
 use Spatie\Permission\Models\Role;
-
+use Carbon\Carbon;
+    
 class MemberController extends Controller
 {
 
     public function index()
     {
+        $stats  = [];
+        $users =  User::role('follow-up')->get();
         if (session('extension_id') == 'glt') {
             $members = Member::with('extension')->with('unit')
                                 ->with('ministry')->with('user')
                                 ->with('role')->get();
+
         }else{
-            $members = Member::with('extension')->with('unit')
+            if (Auth::user()->roles[0]->name == 'follow-up') {
+                $userMembers = User::with(['members' => function ($query) {
+                                        $query->with('extension')->with('unit')->with('assigned')
+                                        ->with('ministry')->with('user')
+                                            ->with('role')->where('extension_id',session('extension_id'));
+                                    }])
+                                    ->where('id',Auth::id())->first();
+                $members = $userMembers->members;
+                $stats['members'] = Member::where('extension_id',session('extension_id') )->pluck('id')->toArray();
+                $stats['new'] = Member::where('extension_id',session('extension_id'))->where('status', 'Guest')->whereDate('created_at', Carbon::today())->count();
+                $stats['texts'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Text')->count();
+                $stats['visits'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Visited')->count();
+                $stats['calls'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Called')->count();
+                $stats['emails'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Sent Email')->count();
+            }
+            else{
+                $members = Member::with('extension')->with('unit')->with('assigned')
                                 ->with('ministry')->with('user')
                                 ->with('role')->where('extension_id',session('extension_id'))->get();
+            }
         }
-        return Inertia::render('MemberComponent', ['members'=>$members]);
+        return Inertia::render('MemberComponent', ['members'=>$members, 'users'=>$users, 'stats'  => $stats]);
 
     }
 
@@ -38,6 +62,30 @@ class MemberController extends Controller
     {
         return Inertia::render('AddMemberComponent');
 
+    }
+
+    public function followUp(Request  $request)
+    {
+        $messages = [
+            'user_id.required' =>  'User id  is required!',
+            'id.required' =>  ' Member Id is required!',
+        ];
+        $validate  = Validator::make($request->all(), [
+            'id' => 'required',
+            'user_id' => 'required',
+        ],$messages);
+        if($validate->fails()){
+            return response()->json(['message' => $validate->messages()->first()], 422);
+        }
+        $user = DB::table('member_user')->where('user_id',$request->user_id)->where('member_id',$request->id)->first();
+        If($user){
+            return response()->json(['message' => 'Member Has Been Assigned to User'],400);
+        }
+        $follow_up = new Follow();
+        $follow_up->user_id = $request->user_id;
+        $follow_up->member_id = $request->id;
+        $follow_up->save();
+        return response()->json(['success' => 'Member Updated Successfully'],200);
     }
 
     public function show($id)
@@ -74,11 +122,12 @@ class MemberController extends Controller
     }
 
 
+
+
     public function updateUnit(Request $request)
     {
         $progress = $request->progress;
-        if ($request->unit_id && $request->ministry_id &&
-            $request->extension_id && $request->requirement && $request->status) {
+        if ($request->unit_id && $request->ministry_id  && $request->requirement && $request->status) {
             if ($progress == 3) {
                 $progress = 4;
             }
@@ -100,7 +149,7 @@ class MemberController extends Controller
                     ->update([
                         'unit_id' => $request->unit_id,
                         'ministry_id' => $request->ministry_id,
-                        'extension_id' => $request->extension_id,
+                        'extension_id' => ($request->extension_id) ?  ($request->extension_id) : Auth::user()->extension_id,
                         'requirement' => $requirement,
                         'status' => $request->status,
                         'role_id' => $request->role_id,
@@ -124,7 +173,7 @@ class MemberController extends Controller
                 $user->assignRole($request->role_id);
             }
         }
-        return response()->json([ 'success' => 'Member Updated Successfully'], 200);
+        return response()->json(['success' => 'Member Updated Successfully'], 200);
     }
 
     public function updateParent(Request $request)

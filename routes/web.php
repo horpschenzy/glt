@@ -39,7 +39,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/member/delete/{id}', 'MemberController@destroy');
     Route::get('/member/update/{id}', 'MemberController@show');
     Route::get('/members/add', 'MemberController@create');
-    Route::get('/members', 'MemberController@index');
+
+    Route::get('/members', 'MemberController@index')->name('members');
+    Route::post('/follow-up', 'MemberController@followUp');
+
+
+    //follow-up
+    Route::post('/follow-up', 'MemberController@followUp');
+    Route::get('/report', 'ReportController@index');
 
     //Ministries
     Route::get('/ministry', 'MinistryController@index')->name('ministry');
@@ -59,6 +66,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/getRolePermissions', 'RolesController@getRolePermissions');
 
 
+
+
     //Units
     Route::get('/unit', 'UnitController@index')->name('unit');
     Route::get('unit/delete/{id}','UnitController@destroy');
@@ -71,6 +80,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/users','UsersController@index');
     Route::get('user/delete/{id}','UsersController@destroy');
     Route::post('/user/add','UsersController@store');
+
+    //follow-up
+    Route::get('feedback/{id}','FeedbackController@index');
+    Route::post('/add/feedback','FeedbackController@store');
 });
 
 Route::get('/login','LoginController@loginView')->name('login');

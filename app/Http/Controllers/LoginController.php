@@ -45,6 +45,10 @@ class LoginController extends Controller
                 session(['extension_id' => 'glt']);
                 return redirect()->route('dashboard.home')->with($notification);
             }
+            elseif (Auth::user()->roles[0]->name == 'follow-up') {
+                session(['extension_id' => Auth::user()->extension_id]);
+                return redirect()->route('members')->with($notification);
+            }
              session(['extension_id' => Auth::user()->extension_id]);
             return redirect()->route('dashboard')->with($notification);
         }else{

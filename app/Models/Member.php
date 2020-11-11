@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $fillable = [
-                            'title','first_name','last_name','other_names', 
+                            'title','first_name','last_name','other_names',
                             'phone_number', 'email_address','dob','marital_status',
                             'address','country','state','city','zipcode','image',
                             'progress', 'extension_id', 'career', 'school',
@@ -28,7 +28,7 @@ class Member extends Model
     {
         return $this->belongsTo('App\Models\Unit');
     }
-    
+
     public function ministry()
     {
         return $this->belongsTo('App\Models\Ministry');
@@ -37,8 +37,18 @@ class Member extends Model
     {
         return $this->hasOne('App\User');
     }
+    public function assigned()
+    {
+        return $this->hasOne('App\Models\Follow');
+    }
+
+    public function users()
+    {
+        return $this->belongsTo('App\User');
+    }
     public function role()
     {
         return $this->belongsTo('Spatie\Permission\Models\Role');
     }
+
 }
