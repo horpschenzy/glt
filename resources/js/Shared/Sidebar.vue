@@ -55,6 +55,16 @@
                     </inertia-link>
                 </li>
 
+                <li class="nav-item">
+
+                    <inertia-link v-if="is('head-of-ministry | ahom | follow-up')" href="/help"><i class="feather icon-play"></i>
+                        <span class="menu-title" data-i18n="">Need Help ?</span></inertia-link>
+                </li>
+
+                <li class="nav-item">
+                        <inertia-link v-if="is('admin|super-admin')" href="/help"><i class="feather icon-play"></i>
+                        <span class="menu-title" data-i18n="">Questions </span></inertia-link>
+                </li>
                 <!-- <li class="nav-item ">
                     <a href="/"><i class="feather icon-layers"></i><span class="menu-title" data-i18n="">Organs</span></a>
                     <ul class="menu-content">

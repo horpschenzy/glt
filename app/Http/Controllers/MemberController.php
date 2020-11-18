@@ -18,7 +18,7 @@ use PragmaRX\Countries\Package\Countries;
 use Intervention\Image\ImageManagerStatic as Image;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
-    
+
 class MemberController extends Controller
 {
 
@@ -380,12 +380,134 @@ class MemberController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Member  $member
-     * @return \Illuminate\Http\Response
-     */
+
+    public function addGuest(Request $request){
+
+        $messages = [
+            'first_name.required' =>  'First Name is required!',
+            'last_name.required' =>  'Last Name is required!',
+            'email_address.required' => 'We need to know your e-mail address!',
+            'phone_number.required' =>  'Member Phone Number is required!',
+            'dob.required' =>  'Member Date of Birth is required!',
+            'marital_status.required' =>  'Member Country is required!',
+            'birthday.required' => 'Guest Birthday is Required',
+            'age_range.required' => 'Guest Age Range is Required',
+            'gender.required' => 'Gender is requiresd',
+            'service_status.required'=>'How was service is required',
+            'find_church.required'=>'How did you find the church is required',
+            'visit_guest.required'=>'Visit Guest is required',
+            'join_church.required'=>'Join church is required',
+            'address.required'=>'Address is required'
+        ];
+
+        $validate  = \Validator::make($request->all(),[
+                'first_name' => 'required|max:255',
+                'last_name' => 'required|max:255',
+                'email_address' => 'required|max:255|unique:members',
+                'phone_number' => 'required|max:255|unique:members',
+                'birthday' => 'required|max:255',
+                'marital_status' => 'required|max:255',
+                'age_range' => 'required|max:255',
+                'gender' => 'required|max:255',
+                'occupation'=>'nullable|string',
+                'school' =>'nullable|string',
+                'employer'=>'nullable|string',
+                'baptized'=>'nullable',
+                'date_of_baptism'=>'nullable',
+                'service_status'=>'required',
+                'find_church'=>'required',
+                'visit_guest'=>'required',
+                'join_church'=>'required',
+                'address'=>'required'
+            ],$messages);
+        if($validate->fails()){
+            return response()->json(['message' => $validate->messages()->first()], 500);
+        }
+
+
+        $data = $request->only(['first_name','last_name','email_address','phone_number','birthday','marital_status','age_range','gender','occupation','school','employer',
+            'baptized','date_of_baptism','service_status','find_church','visit_guest','join_church','address']);
+        $data['progress'] = 1;
+        $data['extension_id'] = Auth::user()->extension_id;
+
+        $member = new Member($data);
+
+        $member->save();
+        return response()->json([ 'success' => 'Member Added Successfully','member' => $member->id], 200);
+
+    }
+
+
+    public function updateGuest(Request $request){
+
+        $messages = [
+            'first_name.required' =>  'First Name is required!',
+            'last_name.required' =>  'Last Name is required!',
+            'email_address.required' => 'We need to know your e-mail address!',
+            'phone_number.required' =>  'Member Phone Number is required!',
+            'dob.required' =>  'Member Date of Birth is required!',
+            'marital_status.required' =>  'Member Country is required!',
+            'birthday.required' => 'Guest Birthday is Required',
+            'age_range.required' => 'Guest Age Range is Required',
+            'gender.required' => 'Gender is requiresd',
+            'service_status.required'=>'How was service is required',
+            'find_church.required'=>'How did you find the church is required',
+            'visit_guest.required'=>'Visit Guest is required',
+            'join_church.required'=>'Join church is required',
+            'address.required'=>'Address is required'
+        ];
+
+        $validate  = \Validator::make($request->all(),[
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email_address' => 'required|max:255|unique:members',
+            'phone_number' => 'required|max:255|unique:members',
+            'birthday' => 'required|max:255',
+            'marital_status' => 'required|max:255',
+            'age_range' => 'required|max:255',
+            'gender' => 'required|max:255',
+            'occupation'=>'nullable|string',
+            'school' =>'nullable|string',
+            'employer'=>'nullable|string',
+            'baptized'=>'nullable',
+            'date_of_baptism'=>'nullable',
+            'service_status'=>'required',
+            'find_church'=>'required',
+            'visit_guest'=>'required',
+            'join_church'=>'required',
+            'address'=>'required'
+        ],$messages);
+        if($validate->fails()){
+            return response()->json(['message' => $validate->messages()->first()], 500);
+        }
+        Member::where('id', $request->id)
+            ->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'other_names' => $request->other_names,
+                'email_address' => $request->email_address,
+                'phone_number' => $request->phone_number,
+                'birthday' => $request->birthday,
+                'marital_status' => $request->marital_status,
+                'address' => $request->address,
+                'age_range' => $request->age_range,
+                'gender' => $request->gender,
+                'occupation' => $request->occupation,
+                'school' => $request->school,
+                'employer' => $request->employer,
+                'baptized' => $request->baptized,
+                'date_of_baptism' => $request->date_of_baptism,
+                'service_status' => $request->service_status,
+                'find_church' => $request->find_church,
+                'visit_guest'=>$request->visit_church,
+                'join_church'=>$request->join_church,
+
+            ]);
+        return response()->json([ 'success' => 'Member Updated Successfully'], 200);
+
+    }
+
+
     public function destroy($id)
     {
         Member::where('id',$id)->delete();

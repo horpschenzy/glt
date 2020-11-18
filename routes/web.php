@@ -35,6 +35,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/member/parent/update', 'MemberController@updateParent');
     Route::post('/member/career/update', 'MemberController@updateCareer');
     Route::post('/member/add/personal', 'MemberController@storePersonal');
+    Route::post('/member/add/guest', 'MemberController@addGuest');
+    Route::post('/member/guest/update', 'MemberController@updateGuest');
+
     Route::post('/member/unit/update', 'MemberController@updateUnit');
     Route::get('/member/delete/{id}', 'MemberController@destroy');
     Route::get('/member/update/{id}', 'MemberController@show');
@@ -65,7 +68,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/assign/permission','RolesController@assignPermission');
     Route::post('/getRolePermissions', 'RolesController@getRolePermissions');
 
+    //Need Help
 
+    Route::get('/help', 'DeveloperHelpController@index');
+    Route::post('/help/add','DeveloperHelpController@store');
 
 
     //Units
