@@ -90,13 +90,15 @@ class ExtensionController extends Controller
 
     public function destroy($extension)
     {
-        $checkIfMemberExist = Member::where('extension_id', $extension)->get();
-        $checkIfUserExist = User::where('extension_id', $extension)->get();
-        if($checkIfMemberExist){
-            return response()->json([ 'error' => "Extension Can't Be Deleted. Delete Extension members first"], 400);
-        }
+        $checkIfMemberExist = Member::where('extension_id', $extension)->first();
+        $checkIfUserExist = User::where('extension_id', $extension)->first();
+        
+
         if($checkIfUserExist){
             return response()->json([ 'error' => "Extension Can't Be Deleted. Delete Extension Users first"], 400);
+        }
+        if($checkIfMemberExist){
+            return response()->json([ 'error' => "Extension Can't Be Deleted. Delete Extension members first"], 400);
         }
         Extension::where('id',$extension)->delete();
         return response()->json([ 'success' => 'Extension Deleted Successfully'], 200);

@@ -1,7 +1,7 @@
 <template>
     <layout>
         <title-bar :name="compoName"></title-bar>
-        <section class="users-edit" v-if="is('super-admin')">
+        <section class="users-edit" v-if="is('admin | head-of-ministry | ahom | super-admin')">
             <div class="card">
                 <div class="card-content">
                     <div class="card-body">
@@ -454,7 +454,7 @@
 
 
 
-        <section id="multiple-column-form" v-if="is('admin | head-of-ministry | ahom | follow-up')">
+        <section id="multiple-column-form" v-if="is('follow-up')">
             <div class="row match-height">
                 <div class="col-12">
                     <div class="card">
