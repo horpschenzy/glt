@@ -44,7 +44,8 @@ class ExtensionController extends Controller
         }
 
         if ($request->id) {
-            if($request->ext_image) {
+            $image_parts = explode(";base64,", $request->ext_image);
+            if(isset($image_parts[1])) {
                 if (!str_contains($request->ext_image, '/images/extension/')) {
                     $folderPath = "images/extension/";
                     $image_parts = explode(";base64,", $request->ext_image);
@@ -54,6 +55,8 @@ class ExtensionController extends Controller
                     $image = $file = $folderPath . uniqid() . '.' . $image_type;
                     file_put_contents($file, $image_base64);
                 }
+            }else{
+                $image = $request->ext_image;
             }
             Extension::where('id',$request->id)
                     ->update([
@@ -92,7 +95,7 @@ class ExtensionController extends Controller
     {
         $checkIfMemberExist = Member::where('extension_id', $extension)->first();
         $checkIfUserExist = User::where('extension_id', $extension)->first();
-        
+
 
         if($checkIfUserExist){
             return response()->json([ 'error' => "Extension Can't Be Deleted. Delete Extension Users first"], 400);
