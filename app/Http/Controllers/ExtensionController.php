@@ -37,7 +37,6 @@ class ExtensionController extends Controller
             'ext_owner' => 'required|max:255',
             // 'ext_email' => 'required|email|unique:extensions,ext_email|max:255',
             'ext_phone' => 'required',
-            'ext_image' => 'required'
         ],$messages);
         if($validate->fails()){
             return response()->json(['message' => $validate->messages()->first()], 500);

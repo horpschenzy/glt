@@ -428,6 +428,9 @@ class MemberController extends Controller
         $data = $request->only(['first_name','last_name','email_address','phone_number','birthday','marital_status','age_range','gender','occupation','school','employer',
             'baptized','date_of_baptism','service_status','find_church','visit_guest','join_church','address']);
         $data['progress'] = 1;
+        if (Auth::user()->extension_id == null) {
+            return response()->json([ 'error' => 'Follow Up User must belong to an extension'], 400);
+        }
         $data['extension_id'] = Auth::user()->extension_id;
 
         $member = new Member($data);

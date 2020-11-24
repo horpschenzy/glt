@@ -32,7 +32,8 @@
                                             <td>{{ key + 1 }} </td>
                                             <td class="product-img">
                                                 <div class="avatar mr-1 avatar-xl">
-                                                    <img :src="extension.ext_image" alt="Img">
+                                                    <img v-if="extension.ext_image" :src="extension.ext_image" alt="Img">
+                                                    <img v-else :src="'/images/logo/gltlogo.png'" alt="Img">
                                                 </div>
                                             </td>
                                             <td>{{ extension.ext_name }}</td>
