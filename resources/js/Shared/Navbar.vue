@@ -8,7 +8,7 @@
                             <ul class="nav navbar-nav">
                                 <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon feather icon-menu"></i></a></li>
                             </ul>
-                            <button class="btn btn-success btn-sm" v-if="$page.auth.user.role == 'super-admin' || $page.auth.user.role == 'admin' "> {{ $page.auth.user.role }}</button>
+                            <button class="btn btn-success btn-sm" v-if="$page.auth.user.role == 'super-admin' || $page.auth.user.role == 'admin' "> {{ $page.auth.user.role }} --> {{$page.auth.user.ext_name.toUpperCase}}</button>
                             <button class="btn btn-success btn-sm" v-else>{{ $page.auth.user.extension_name.toUpperCase() }} </button>
                         </div>
                         <ul class="nav navbar-nav float-right">

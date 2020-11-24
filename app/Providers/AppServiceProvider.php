@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Schema;
+use URL;
+use Inertia\Inertia;
+use App\Models\Extension;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
-use URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,7 +45,8 @@ class AppServiceProvider extends ServiceProvider
                         'email' => Auth::user()->email,
                         'extension_name' => (Auth::user()->extension) ? Auth::user()->extension->ext_name : Auth::user()->roles[0]->name,
                         'role' => Auth::user()->roles[0]->name,
-                        'extension_id' => session(`extension_id`)
+                        'extension_id' => session(`extension_id`),
+                        'ext_name' => session(`extension_id`) == 'glt' ? '': Extension::getExtensionName(session(`extension_id`)),
 
                     ] : null,
                 ];
