@@ -38,6 +38,9 @@ class AppServiceProvider extends ServiceProvider
 
         Inertia::share([
             'auth' => function () {
+                $extension = new Extension();
+                $name = session('extension_id') == 'glt' ? '': $extension->getExtensionName(session('extension_id'));
+                $ext_name = session('extension_id') == 'glt' ? '': '>> '.$name->name;
                 return [
                     'user' => Auth::user() ? [
                         'id' => Auth::user()->id,
@@ -46,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
                         'extension_name' => (Auth::user()->extension) ? Auth::user()->extension->ext_name : Auth::user()->roles[0]->name,
                         'role' => Auth::user()->roles[0]->name,
                         'extension_id' => session(`extension_id`),
-                        'ext_name' => session(`extension_id`) == 'glt' ? '': Extension::getExtensionName(session(`extension_id`)),
+                        'ext_name' => $ext_name,
 
                     ] : null,
                 ];

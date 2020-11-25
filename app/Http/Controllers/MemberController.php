@@ -356,7 +356,11 @@ class MemberController extends Controller
 
         $data = $request->only(['title','first_name','last_name','other_names','email_address','phone_number','dob','marital_status','address','country','state','city','zipcode']);
         $data['progress'] = 1;
+        if (Auth::user()->extension_id == null) {
+            return response()->json([ 'error' => 'Follow Up User must belong to an extension'], 400);
+        }
         $data['extension_id'] = Auth::user()->extension_id;
+
         if($request->image){
             if (!str_contains($request->image, '/images/profile/')){
                 // $pdate = strtotime(date('y-m-d h:i:s')).'.png';
