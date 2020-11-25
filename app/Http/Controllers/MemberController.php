@@ -357,9 +357,17 @@ class MemberController extends Controller
         $data = $request->only(['title','first_name','last_name','other_names','email_address','phone_number','dob','marital_status','address','country','state','city','zipcode']);
         $data['progress'] = 1;
         if (Auth::user()->extension_id == null) {
-            return response()->json([ 'error' => 'Follow Up User must belong to an extension'], 400);
+            if(session('extension_id') == 'glt') {
+                return response()->json([ 'message' => 'User must belong to an extension'], 400);
+            }
+            else{
+                $data['extension_id'] = session('extension_id');
+            }
         }
-        $data['extension_id'] = Auth::user()->extension_id;
+        else{
+
+            $data['extension_id'] = Auth::user()->extension_id;
+        }
 
         if($request->image){
             if (!str_contains($request->image, '/images/profile/')){
@@ -433,9 +441,17 @@ class MemberController extends Controller
             'baptized','date_of_baptism','service_status','find_church','visit_guest','join_church','address']);
         $data['progress'] = 1;
         if (Auth::user()->extension_id == null) {
-            return response()->json([ 'error' => 'Follow Up User must belong to an extension'], 400);
+            if(session('extension_id') == 'glt') {
+                return response()->json([ 'message' => 'Follow Up User must belong to an extension'], 400);
+            }
+            else{
+                $data['extension_id'] = session('extension_id');
+            }
         }
-        $data['extension_id'] = Auth::user()->extension_id;
+        else{
+
+            $data['extension_id'] = Auth::user()->extension_id;
+        }
 
         $member = new Member($data);
 
