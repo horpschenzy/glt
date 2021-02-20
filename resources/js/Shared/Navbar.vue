@@ -14,11 +14,15 @@
                         <ul class="nav navbar-nav float-right">
                             <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                     <div class="user-nav d-sm-flex d-none"><span class="user-name text-bold-600">{{ $page.auth.user.name }}</span><span class="user-status">Available</span></div><span>
-                                        <img class="round" :src="'/images/portrait/small/avatar-s-10.png'" alt="avatar" height="40" width="40" />
+                                        <img v-if="$page.auth.user.image != ''" class="round" :src="'/'+$page.auth.user.image" alt="avatar" height="40" width="40" />
+                                        <img v-else class="round" :src="'/images/logo.png'" alt="avatar" height="40" width="40" />
                                         </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="page-user-profile.html"><i class="feather icon-user"></i> Edit Profile</a>
+                                    <inertia-link href="/profile" class="dropdown-item">
+                                        <i class="feather icon-users"></i>
+                                        Edit Profile
+                                    </inertia-link>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#" @click="handleLogout"><i class="feather icon-power"></i> Logout</a>
                                 </div>

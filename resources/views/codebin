@@ -1,0 +1,9 @@
+$details = [];
+        $details['firstname'] = $request->first_name;
+        $details['access_code'] = $accessCode;
+        $this->email = $request->email;
+        $this->name = $request->first_name;
+        Mail::send('emails.registeration', $details , function($message){
+            $message->to($this->email, $this->name)
+                    ->subject('GLT Welcome Mail');
+        });

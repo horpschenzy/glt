@@ -11,17 +11,19 @@ use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 use Validator;
+use App\Http\Traits\NewNotificationTrait;
 class UsersController extends Controller
 {
+    use NewNotificationTrait;
 
     public function index()
     {
         $extensions = Extension::all();
         $roles = Role::all();
         if (session('extension_id') == 'glt' || Auth::user()->roles[0]->name == 'super-admin') {
-            $users = User::with('extension')->with('roles')->get();
+            $users = User::with('extension')->with('roles')->where('active', 1)->get();
         }else{
-            $users = User::with('extension')->with('roles')->where('extension_id',session('extension_id'))->get();
+            $users = User::with('extension')->with('roles')->where('extension_id',session('extension_id'))->where('active', 1)->get();
         }
        return Inertia::render('AddUserComponent',['extensions'=>$extensions,'users'=>$users,'roles'=>$roles]);
     }
@@ -52,7 +54,7 @@ class UsersController extends Controller
 
         if ($request->id) {
             $user  =  User::where('id',$request->id)->first();
-            $user->syncRoles($request->role_id);
+            
                         $user->update([
                             'name' => $request->name,
                             'email' => $request->email,
@@ -62,7 +64,16 @@ class UsersController extends Controller
                             'status' => $request->status,
                             'role_id' => $request->role_id
                         ]);
-
+                        $role_id = $user->role_id;
+                        if ($role_id == $request->role_id) {
+                            $this->saveNotification($user->id, 'useractivities', 'You changed your Unit/Ministry information','');
+                        }
+                        else{
+                            $getOldRoleDetails = Role::where('id', $role_id)->first()->name;
+                            $getNewRoleDetails = Role::where('id', $request->role_id)->first()->name;
+                            $this->saveNotification($user->id, 'useractivities', 'You have been moved from '.$getOldRoleDetails.' to '.$getNewRoleDetails,'');
+                        }
+                        $user->syncRoles($request->role_id);            
             if($user->member_id){
                 Member::where('id', $user->member_id)->update([
                     'email_address' => $request->email,

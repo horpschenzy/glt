@@ -26,7 +26,6 @@ Route::group(['middleware' => ['auth']], function() {
 
     //extension
     Route::get('/extension','ExtensionController@index')->name('extension');
-
     Route::get('extension/delete/{id}','ExtensionController@destroy');
     Route::post('/extension/add','ExtensionController@store');
 
@@ -42,9 +41,18 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/member/delete/{id}', 'MemberController@destroy');
     Route::get('/member/update/{id}', 'MemberController@show');
     Route::get('/members/add', 'MemberController@create');
+    Route::get('/members/guest/add', 'MemberController@createGuest');
 
     Route::get('/members', 'MemberController@index')->name('members');
+    Route::get('/registered-non-members', 'MemberController@registerdNonMembers');
     Route::post('/follow-up', 'MemberController@followUp');
+
+    Route::get('/profile', 'ProfileController@index')->name('profile');
+    Route::get('/member/profile', 'ProfileController@memberProfile')->name('member.profile');
+
+    Route::post('/profile-update', 'ProfileController@store');
+    Route::post('/profile-picture', 'ProfileController@editImage');
+    Route::post('/change-password', 'ProfileController@changePassword');
 
 
     //follow-up
@@ -90,9 +98,42 @@ Route::group(['middleware' => ['auth']], function() {
     //follow-up
     Route::get('feedback/{id}','FeedbackController@index');
     Route::post('/add/feedback','FeedbackController@store');
+
+    //foundation
+    Route::get('/foundation/dashboard','FoundationController@index')->name('foundation.dashboard');
+    Route::get('/member/move/{id}', 'FoundationController@moveMember');
+    Route::get('/students', 'FoundationController@students');
+    Route::get('/student/delete/{id}', 'FoundationController@studentDelete');
+    Route::get('/add/teacher/{id}', 'FoundationController@addTeacher');
+    Route::get('/teacher/delete/{id}', 'FoundationController@teacherDelete');
+    Route::get('/teachers', 'FoundationController@teachers');
+    Route::post('/assign/teacher', 'FoundationController@assignTeacher');
+
+    //course
+    Route::get('/course','CourseController@index')->name('course');
+    Route::get('course/delete/{id}','CourseController@destroy');
+    Route::post('/course/add','CourseController@store');
+    Route::get('/add/course','CourseController@addCourse');
+
+    //event
+    Route::get('/event','EventController@index')->name('event');
+    Route::get('/edit/event/{id}','EventController@show');
+    Route::post('/event','EventController@store');
+    Route::post('/moveUserIn','EventController@moveUserIn');
+    Route::post('/searchCheckIns/{event_id}','EventController@searchCheckIns');
+    Route::get('/add/event','EventController@create');
+    Route::get('/delete/event/{id}','EventController@destroy');
+    Route::get('/check-in/event/{event_code}','EventController@checkIn');
+    Route::get('/attendee/event/{event_code}','EventController@attendee');
 });
 
 Route::get('/login','LoginController@loginView')->name('login');
+Route::get('/e/{slug}','LoginController@viewEvent');
+Route::get('/register/event/{slug}','LoginController@registerEvent');
+Route::get('/register/{slug}','LoginController@newRegisterEvent');
 Route::post('/customLogin','LoginController@login');
+Route::post('/checkAccessCode/{event_code}','LoginController@checkAccessCode');
+Route::post('/registerUser/{event_code}','LoginController@registerUser');
 Route::post('/logout','LoginController@logout');
+Route::get('/testmail','LoginController@testmail');
 

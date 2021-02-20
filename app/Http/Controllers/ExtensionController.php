@@ -37,12 +37,14 @@ class ExtensionController extends Controller
             'ext_owner' => 'required|max:255',
             // 'ext_email' => 'required|email|unique:extensions,ext_email|max:255',
             'ext_phone' => 'required',
+            // 'ext_image' => 'required'
         ],$messages);
         if($validate->fails()){
             return response()->json(['message' => $validate->messages()->first()], 500);
         }
 
         if ($request->id) {
+
             $image_parts = explode(";base64,", $request->ext_image);
             if(isset($image_parts[1])) {
                 if (!str_contains($request->ext_image, '/images/extension/')) {
@@ -94,7 +96,7 @@ class ExtensionController extends Controller
     {
         $checkIfMemberExist = Member::where('extension_id', $extension)->first();
         $checkIfUserExist = User::where('extension_id', $extension)->first();
-
+        
 
         if($checkIfUserExist){
             return response()->json([ 'error' => "Extension Can't Be Deleted. Delete Extension Users first"], 400);

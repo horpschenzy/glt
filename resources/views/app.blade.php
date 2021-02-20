@@ -21,6 +21,8 @@
             jsPermissions: {!! auth()->check()?auth()->user()->jsPermissions():null !!}
         }
     </script> 
+
+
     {{-- Include core + vendor Styles --}}
     @include('panels/styles')
 
@@ -28,7 +30,7 @@
     @yield('mystyle')
   </head>
 
-  <body class="vertical-layout vertical-menu-modern 2-columns navbar-floating footer-static" data-menu="vertical-menu-modern" data-col="2-columns">
+  <body class="vertical-layout vertical-menu-modern 2-columns navbar-floating footer-static" data-menu="vertical-menu-modern" data-col="2-columns" id="body">
   {{--  <body class="vertical-layout vertical-menu-modern 2-columns menu-collapsed  navbar-static footer-static   blank-page" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">  --}}
 
     @inertia
@@ -45,6 +47,8 @@
 
         {{-- Include page script --}}
         @yield('myscript')
+
+
 
   </body>
 </html>

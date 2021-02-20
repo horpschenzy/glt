@@ -1,13 +1,13 @@
 <template>
     <layout>
         <title-bar :name="compoName"></title-bar>
-
+        
         <div  id="slide-in" class="row"  >
             <div class="col-lg-4 col-md-6 col-sm-12" v-for="(extension, key) in extensions" :key="key">
                 <div class="card border-info text-center bg-transparent">
                     <div class="card-content">
                         <img v-if="extension.ext_image" :src="'/'+extension.ext_image" :alt="extension.name" height="100" width="100" style="padding: 20px;" class="float-left mt-3 pl-2">
-                        <img v-else :src="'/images/logo/gltlogo.png'" :alt="extension.name" height="100" width="100" style="padding: 20px;" class="float-left mt-3 pl-2">
+                        <img v-else :src="'/images/logo/gltlogo.png'" :alt="Headquarter" height="100" width="100" style="padding: 20px;" class="float-left mt-3 pl-2">
                         <div class="card-body">
                             <h4 class="card-title mt-3">{{extension.ext_name}}</h4>
                             <p class="card-text mb-25">{{extension.ext_location}}</p>
@@ -69,7 +69,7 @@ export default {
                 this.loader = false;
                 toastr.error(error.response.data.message, 'Error');
             });
-
+            
         }
     },
 

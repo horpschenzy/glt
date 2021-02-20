@@ -1,38 +1,44 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Follow;
-use Illuminate\Support\Facades\DB;
 use URL;
 use Auth;
+use App\User;
 use Validator;
-use App\Models\Extension;
+use Carbon\Carbon;
+use App\Models\Unit;
+use Inertia\Inertia;
+use App\Models\Follow;
+use App\Models\Member;
 use App\Models\Feedback;
 use App\Models\Ministry;
-use App\Models\Member;
-use App\Models\Unit;
-use App\User;
+use App\Models\Extension;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Traits\NewNotificationTrait;
 use PragmaRX\Countries\Package\Countries;
 use Intervention\Image\ImageManagerStatic as Image;
-use Spatie\Permission\Models\Role;
-use Carbon\Carbon;
 
 class MemberController extends Controller
 {
 
-    public function index()
+    use NewNotificationTrait;
+
+    public function registerdNonMembers()
     {
         $stats  = [];
-        $users =  User::role('follow-up')->get();
+        $stats['page']  = 'non';
         if (session('extension_id') == 'glt') {
+            $users =  User::role('follow-up')->get();
             $members = Member::with('extension')->with('unit')
-                                ->with('ministry')->with('user')
-                                ->with('role')->get();
-
+            ->with('ministry')->with('user')
+            ->with('role')->where('active', '0')->get();
+            
         }else{
             if (Auth::user()->roles[0]->name == 'follow-up') {
+                $users =  User::role('follow-up')->where('extension_id',session('extension_id'))->get();
                 $userMembers = User::with(['members' => function ($query) {
                                         $query->with('extension')->with('unit')->with('assigned')
                                         ->with('ministry')->with('user')
@@ -40,17 +46,58 @@ class MemberController extends Controller
                                     }])
                                     ->where('id',Auth::id())->first();
                 $members = $userMembers->members;
-                $stats['members'] = Member::where('extension_id',session('extension_id') )->pluck('id')->toArray();
-                $stats['new'] = Member::where('extension_id',session('extension_id'))->where('status', 'Guest')->whereDate('created_at', Carbon::today())->count();
+                
+                $stats['members'] = Member::where('extension_id',session('extension_id'))->where('active', 1)->pluck('id')->toArray();
+                $stats['new'] = Member::where('extension_id',session('extension_id'))->where('active','0')->where('status', 'Guest')->whereDate('created_at', Carbon::today())->count();
                 $stats['texts'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Text')->count();
                 $stats['visits'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Visited')->count();
                 $stats['calls'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Called')->count();
                 $stats['emails'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Sent Email')->count();
             }
             else{
+                $users =  User::role('follow-up')->where('extension_id',session('extension_id'))->get();
                 $members = Member::with('extension')->with('unit')->with('assigned')
                                 ->with('ministry')->with('user')
-                                ->with('role')->where('extension_id',session('extension_id'))->get();
+                                ->with('role')->where('extension_id',session('extension_id'))->where('active', '0')->get();
+            }
+        }
+        return Inertia::render('MemberComponent', ['members'=>$members, 'users'=>$users, 'stats'  => $stats]);
+
+    }
+
+    public function index()
+    {
+        $stats  = [];
+        $stats['page']  = '';
+        if (session('extension_id') == 'glt') {
+            $users =  User::role('follow-up')->get();
+            $members = Member::with('extension')->with('unit')
+            ->with('ministry')->with('user')
+            ->with('role')->where('active', 1)->get();
+            
+        }else{
+            if (Auth::user()->roles[0]->name == 'follow-up') {
+                $users =  User::role('follow-up')->where('extension_id',session('extension_id'))->get();
+                $userMembers = User::with(['members' => function ($query) {
+                                        $query->with('extension')->with('unit')->with('assigned')
+                                        ->with('ministry')->with('user')
+                                            ->with('role')->where('extension_id',session('extension_id'));
+                                    }])
+                                    ->where('id',Auth::id())->first();
+                $members = $userMembers->members;
+                
+                $stats['members'] = Member::where('extension_id',session('extension_id'))->where('active', 1)->pluck('id')->toArray();
+                $stats['new'] = Member::where('extension_id',session('extension_id'))->where('active', 1)->where('status', 'Guest')->whereDate('created_at', Carbon::today())->count();
+                $stats['texts'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Text')->count();
+                $stats['visits'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Visited')->count();
+                $stats['calls'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Called')->count();
+                $stats['emails'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Sent Email')->count();
+            }
+            else{
+                $users =  User::role('follow-up')->where('extension_id',session('extension_id'))->get();
+                $members = Member::with('extension')->with('unit')->with('assigned')
+                                ->with('ministry')->with('user')
+                                ->with('role')->where('extension_id',session('extension_id'))->where('active', 1)->get();
             }
         }
         return Inertia::render('MemberComponent', ['members'=>$members, 'users'=>$users, 'stats'  => $stats]);
@@ -61,6 +108,12 @@ class MemberController extends Controller
     public function create()
     {
         return Inertia::render('AddMemberComponent');
+
+    }
+
+    public function createGuest()
+    {
+        return Inertia::render('AddGuestMemberComponent');
 
     }
 
@@ -98,17 +151,6 @@ class MemberController extends Controller
         return Inertia::render('UpdateMemberComponent',['units' => $units, 'ministries' => $ministries,'member' => $member, 'extensions' => $extensions, 'roles' => $roles]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     **/
-    public function store(Request $request)
-    {
-        //
-    }
-
-
     public function getStates($country)
     {
         $countries = new Countries();
@@ -120,8 +162,6 @@ class MemberController extends Controller
         return response()->json([ 'states' =>  $all], 200);
 
     }
-
-
 
 
     public function updateUnit(Request $request)
@@ -154,10 +194,20 @@ class MemberController extends Controller
                         'status' => $request->status,
                         'role_id' => $request->role_id,
                         'progress' => $progress,
+                        'image' => empty($request->image) ? 'images/logo.png' : $request->image,
                     ]);
         if ($request->role_id) {
             $checkExist = User::where('email',$request->email_address)->first();
             if ($checkExist) {
+                $role_id = $checkExist->role_id;
+                if ($role_id == $request->role_id) {
+                    $this->saveNotification($checkExist->id, 'useractivities', 'You changed your Unit/Ministry information','');
+                }
+                else{
+                    $getOldRoleDetails = Role::where('id', $role_id)->first()->name;
+                    $getNewRoleDetails = Role::where('id', $request->role_id)->first()->name;
+                    $this->saveNotification($checkExist->id, 'useractivities', 'You have been moved from '.$getOldRoleDetails.' to '.$getNewRoleDetails,'');
+                }
                 $checkExist->syncRoles($request->role_id);
             }
             else{
@@ -168,9 +218,11 @@ class MemberController extends Controller
                     'phone' => $request->phone_number,
                     'member_id' => $request->id,
                     'extension_id' => $request->extension_id,
+                    'image' => empty($request->image) ? 'images/logo.png' : $request->image,
                     'password' => bcrypt($request->last_name)
                 ]);
                 $user->assignRole($request->role_id);
+                $this->saveNotification($user->id, 'useractivities', 'You changed your Unit/Ministry information','');
             }
         }
         return response()->json(['success' => 'Member Updated Successfully'], 200);
@@ -197,6 +249,8 @@ class MemberController extends Controller
                         'parent_marital_status' => $request->parent_marital_status,
                         'progress' => $progress,
                     ]);
+        $user = User::where('member_id', $request->id)->first();
+        $this->saveNotification($user->id, 'useractivities', 'You changed your Parent information','');
         return response()->json([ 'success' => 'Member Updated Successfully'], 200);
     }
 
@@ -259,6 +313,8 @@ class MemberController extends Controller
                                 'progress' => $progress,
                             ]);
         }
+        $user = User::where('member_id', $request->id)->first();
+        $this->saveNotification($user->id, 'useractivities', 'You changed your Career information','');
         return response()->json([ 'success' => 'Member Updated Successfully'], 200);
     }
 
@@ -322,8 +378,30 @@ class MemberController extends Controller
                             'state' => $request->state,
                             'city' => $request->city,
                             'zipcode' => $request->zipcode,
+                            'active' => (int) $request->active,
                             'image' => $image,
                         ]);
+        $user = User::where('member_id', $request->id);
+        $updateUser = $user->update([
+                            'name' => $request->last_name.' '.$request->first_name,
+                            'email' => $request->email_address,
+                            'phone' => $request->phone_number,
+                            'active' => (int) $request->active,
+                            'image' => $image,
+        ]);
+        if ($getMember->active == '0' && $request->active == '1' ) {
+            $accessCode =  $user->first()->access_code;
+            $details = [];
+            $details['firstname'] = $request->first_name;
+            $details['access_code'] = $accessCode;
+            $this->email = $request->email_address;
+            $this->name = $request->first_name;
+            Mail::send('emails.registeration', $details , function($message){
+                $message->to($this->email, $this->name)
+                        ->subject('GLT Welcome Mail');
+            });
+        }
+        $this->saveNotification($user->first()->id, 'useractivities', 'You changed your personal information','');
         return response()->json([ 'success' => 'Member Updated Successfully'], 200);
     }
 
@@ -348,7 +426,6 @@ class MemberController extends Controller
             'marital_status' => 'required|max:255',
             'country' => 'required|max:255',
             'state' => 'required|max:255',
-            'image' => 'required',
         ],$messages);
         if($validate->fails()){
             return response()->json(['message' => $validate->messages()->first()], 500);
@@ -369,6 +446,8 @@ class MemberController extends Controller
             $data['extension_id'] = Auth::user()->extension_id;
         }
 
+        $date['image'] = ($request->image) ?  $request->image : 'images/portrait/small/avatar-s-10.png';
+
         if($request->image){
             if (!str_contains($request->image, '/images/profile/')){
                 // $pdate = strtotime(date('y-m-d h:i:s')).'.png';
@@ -388,6 +467,22 @@ class MemberController extends Controller
         }
         $member = new Member($data);
         $member->save();
+
+        $role_id = Role::where('name','member')->first()->id;
+        $accessCode =  mt_rand(1000, 999999);
+        $user = User::create([
+            'name' => $request->last_name.' '.$request->first_name,
+            'username' => 'user-'.uniqid(),
+            'email' => $request->email_address,
+            'phone' => $request->phone_number,
+            'member_id' => $member->id,
+            'extension_id' => $data['extension_id'],
+            'image' => (isset($data['image'])) ? $data['image'] : 'images/logo.png',
+            'access_code' => $accessCode,
+            'role_id' => $role_id,
+            'password' => bcrypt($request->last_name)
+        ]);
+        $user->assignRole('member');
         return response()->json([ 'success' => 'Member Added Successfully','member' => $member->id], 200);
     }
 

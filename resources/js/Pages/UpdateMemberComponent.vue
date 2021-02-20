@@ -148,6 +148,14 @@
                                                 <label>Address</label>
                                                 <textarea v-model="form.address" id="Address" rows="5" value="" class="form-control"></textarea>                                            
                                             </div>
+                                            <div class="form-group">
+                                                <label>Active Status</label>
+                                                <select class="form-control" required v-model="form.active">
+                                                    <option value="">Select Status</option>
+                                                    <option value="1">Active</option>
+                                                    <option value="0">Inactive</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">
@@ -533,7 +541,7 @@ export default {
             states: Array,
             form: {
                 id: '', title: '', first_name: '', last_name: '', other_names: '',
-                phone_number: '', email_address: '', dob: '', marital_status: '',
+                phone_number: '', email_address: '', dob: '', marital_status: '', active: '',
                 address: '', country: '', state: '', city: '',
                 zipcode: '', image: '', career: '', school: '',
                 course_of_study: '', hostel_address: '', home_address: '', school_level: '',

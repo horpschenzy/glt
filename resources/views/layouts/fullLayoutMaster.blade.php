@@ -49,21 +49,22 @@
         <script>
             @if(Session::has('message'))
                 var type = "{{ Session::get('alert-type', 'info') }}";
+                var alert_js_type = "{{ Session::get('alert_js_type', 'toastr') }}";
                 switch(type){
                     case 'info':
-                        toastr.info("{{ Session::get('message') }}");
+                        (alert_js_type == 'sweetalert') ?  Swal.fire({type: 'info', title: "{{ Session::get('message') }}"})  : toastr.info("{{ Session::get('message') }}");
                         break;
     
                     case 'warning':
-                        toastr.warning("{{ Session::get('message') }}");
+                        (alert_js_type == 'sweetalert') ?  Swal.fire({type: 'warning', title: "{{ Session::get('message') }}"})  : toastr.warning("{{ Session::get('message') }}");
                         break;
     
                     case 'success':
-                        toastr.success("{{ Session::get('message') }}");
+                        (alert_js_type == 'sweetalert') ?  Swal.fire({type: 'success', title: "{{ Session::get('message') }}"})  : toastr.success("{{ Session::get('message') }}");
                         break;
     
                     case 'error':
-                        toastr.error("{{ Session::get('message') }}");
+                        (alert_js_type == 'sweetalert') ?  Swal.fire({type: 'error', title: "{{ Session::get('message') }}"})  : toastr.error("{{ Session::get('message') }}");
                         break;
                 }
             @endif

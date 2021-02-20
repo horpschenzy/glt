@@ -31,7 +31,14 @@
 <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css">
 <!-- END: Page CSS-->
 <!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css" href="{{secure_asset('css/plugins/forms/wizard.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('css/core/menu/menu-types/vertical-menu.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('css/core/colors/palette-gradient.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/pages/users.css') }} ">
+
+<link rel="stylesheet" type="text/css" href="{{asset('css/plugins/forms/validation/form-validation.css')}}">
+<!-- END: Page CSS-->
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css" href="{{asset('css/plugins/forms/wizard.css')}}">
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
@@ -40,7 +47,7 @@
 <link rel="stylesheet" type="text/css" href="/vendors/css/tables/datatable/datatables.min.css">
 <link rel="stylesheet" type="text/css" href="{{ secure_asset(('css/pages/data-list-view.css')) }}">
 <!-- END: Custom CSS-->
-
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 {{-- {!! Helper::applClasses() !!} --}}
 
 <link rel="stylesheet" href="{{ secure_asset(('css/themes/dark-layout.css')) }}">

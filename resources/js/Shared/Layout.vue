@@ -59,5 +59,18 @@ export default {
     methods: {
        
     },
+    created() {
+        
+        var body = document.getElementById('body');
+        var choice = this.$page.auth.user.choices;
+        if (choice == 'normal'){
+            body.classList.remove("dark-layout");
+        }
+        else{
+            body.classList.add("dark-layout");
+        }
+        console.log(this.$page.auth.user.choices);
+    },
 }
+
 </script>

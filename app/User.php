@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Auth;
 use App\Models\Member;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','username','phone','extension_id','member_id','status','role_id'
+        'name', 'email', 'password','username','phone','extension_id','member_id','status','role_id','choices','image', 'access_code', 'active'
     ];
 
     /**
@@ -48,4 +49,6 @@ class User extends Authenticatable
     public  function members(){
         return $this->belongsToMany(Member::class);
     }
+
+
 }

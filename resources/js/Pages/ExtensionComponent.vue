@@ -16,7 +16,7 @@
                             <div class="table-responsive mt-2">
                                 <table class="table table-hover zero-configuration">
                                     <thead>
-                                        <tr>
+                                        <tr> 
                                             <th>Extension ID</th>
                                             <th>Image</th>
                                             <th>Extension Name</th>

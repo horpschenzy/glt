@@ -104,7 +104,7 @@
                 <div class="card mb-1">
                     <div class="card-header d-flex align-items-start pb-2">
                         <div>
-                            <h3 class="text-bold-600">{{ (0)}}</h3>
+                            <h3 class="text-bold-600">{{ (stats.events) }}</h3>
                             <p class="mb-0">Next Event</p>
                         </div>
                         <div class="avatar bg-rgba-primary p-50">
@@ -227,7 +227,7 @@
                 <div class="card mb-1">
                     <div class="card-header d-flex align-items-start pb-2">
                         <div>
-                            <h3 class="text-bold-600">{{ (0)}}</h3>
+                            <h3 class="text-bold-600">{{ (stats.events) }}</h3>
                             <p class="mb-0">Next Event</p>
                         </div>
                         <div class="avatar bg-rgba-primary p-50">
