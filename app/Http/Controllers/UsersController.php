@@ -54,7 +54,7 @@ class UsersController extends Controller
 
         if ($request->id) {
             $user  =  User::where('id',$request->id)->first();
-            
+
                         $user->update([
                             'name' => $request->name,
                             'email' => $request->email,
@@ -73,12 +73,13 @@ class UsersController extends Controller
                             $getNewRoleDetails = Role::where('id', $request->role_id)->first()->name;
                             $this->saveNotification($user->id, 'useractivities', 'You have been moved from '.$getOldRoleDetails.' to '.$getNewRoleDetails,'');
                         }
-                        $user->syncRoles($request->role_id);            
+                        $user->syncRoles($request->role_id);
             if($user->member_id){
                 Member::where('id', $user->member_id)->update([
                     'email_address' => $request->email,
                     'phone_number' => $request->phone,
                     'role_id' => $request->role_id,
+                    'extension_id' => $request->extension_id,
                 ]);
             }
             if($request->password){
@@ -89,6 +90,17 @@ class UsersController extends Controller
         }
         else{
             $data = $request->only(['name','email','phone','username','password','extension_id','role_id','status']);
+
+            $memberData = [];
+            $memberData['email_address'] =  $request->email;
+            $memberData['phone_number'] =  $request->phone;
+            $memberData['first_name'] =  $request->name;
+            $memberData['extension_id'] =  $request->extension_id;
+            $memberData['role_id'] =  $request->role_id;
+            $saveMember = new Member($memberData);
+            $saveMember->save();
+
+            $data['member_id'] = $saveMember->id;
             $data['password'] = bcrypt($request->password);
             $user = new User($data);
             $user->assignRole($request->role_id);

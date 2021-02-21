@@ -28,7 +28,13 @@ class ProfileController extends Controller
         $users = User::where('id',Auth::id())->first();
         $notifications = Notification::where('user_id',Auth::id())->get();
         $page = 'timeline';
-        $leaders = User::with('roles')->whereHas('roles', function($query){ $query->where('name', 'ahom'); })->where('extension_id',session('extension_id'))->where('active', 1)->get();
+        $leaders = User::with('roles')->whereHas('roles', function($query){
+                            $query->where('name', 'ahom')->orWhere('name', 'admin')
+                            ->orWhere('name', 'head-of-follow-up-ministry')
+                            ->orWhere('name', 'head-of-ministry')
+                            ->orWhere('name', 'follow-up')
+                            ->orWhere('name', 'teaching-ministry');
+                    })->where('extension_id',session('extension_id'))->where('active', 1)->get();
         return Inertia::render('MemberProfileComponent',['users'=>$users,'member'=>$member, 'notifications' => $notifications, 'page' => $page, 'leaders' => $leaders]);
     }
 
