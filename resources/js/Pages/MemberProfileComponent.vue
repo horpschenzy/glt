@@ -8,7 +8,8 @@
                             <div class="profile-header mb-2">
                                 <div class="relative">
                                     <div class="cover-container">
-                                        <img class="img-fluid bg-cover rounded-0 w-100" :src="'/images/gltlogos.png'" alt="User Profile Image">
+                                        <img v-if="member.banner" style="height: 300px" class="img-fluid bg-cover rounded-0 w-100" :src="'/'+member.banner"  alt="User Profile Image">
+                                        <img v-else class="img-fluid bg-cover rounded-0 w-100" :src="'/images/gltlogos.png'" alt="User Banner Image">
                                     </div>
                                     <div class="profile-img-container d-flex align-items-center justify-content-between">
                                         <!-- <img :src="'/images/profile/user-uploads/user-13.jpg'" class="rounded-circle img-border box-shadow-1" alt="Card image"> -->
@@ -16,10 +17,10 @@
                                         <img  v-else-if="'/'+users.image" :src="users.image" class="rounded-circle img-border box-shadow-1" alt="">
                                         <img  v-else :src="'/images/logo.png'" class="rounded-circle img-border box-shadow-1" alt="">
                                         <div class="float-right">
-                                            <button type="button" class="btn btn-icon btn-icon rounded-circle btn-primary mr-1 waves-effect waves-light">
+                                            <inertia-link href="/profile" class="btn btn-icon btn-icon rounded-circle btn-primary mr-1 waves-effect waves-light">
                                                 <i class="feather icon-edit-2"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-light">
+                                            </inertia-link>
+                                            <button data-toggle="modal"  data-target="#addBannerModal" class="btn btn-icon btn-icon rounded-circle btn-primary waves-effect waves-light">
                                                 <i class="feather icon-settings"></i>
                                             </button>
                                         </div>
@@ -160,6 +161,43 @@
 
                         </div>
                     </section>
+
+                    <div class="modal fade text-left" id="addBannerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel33">Update Banner</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form class="form form-vertical" method="POST" action="#" @submit.prevent="submit">
+                                    <div class="modal-body row m-1">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label for="pictureFile">Banner (1000px X 300px)</label>
+                                                <div class="custom-file">
+                                                    <input type="file" id="pictureFile"
+                                                        class="custom-file-input"
+                                                        accept="image/*"
+                                                        data-default-file=""
+                                                        data-height="200"
+                                                        data-max-file-size="5M"
+                                                        data-width="100"
+                                                        data-allowed-file-extensions="jpg jpeg gif png rpg jfif"
+                                                        @change="onImageChange"/>
+                                                    <label for="pictureFile" class="custom-file-label">Upload Banner</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary mr-1  waves-effect waves-light"> <i class="fa fa-circle-o-notch fa-spin mr-3" v-if="loader"></i>Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
             </div>
 
         </layout>
@@ -189,7 +227,7 @@ export default {
             loader : false,
             addEdit : '',
             form: {
-
+                banner: ''
             },
         }
     },
@@ -201,11 +239,34 @@ export default {
     },
 
     methods: {
-        deleteUnit() {
+        
+        onImageChange(e) {
+            let files = e.target.files || e.dataTransfer.files;
+
+            return this.createImage(files[0]);
 
         },
-        submit() {
+        createImage(file) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.form.banner = e.target.result;
+            };
 
+            reader.readAsDataURL(file);
+        },
+        submit() {
+            this.loader = true;
+            axios.post("/update/banner", this.form)
+            .then(response => {
+            toastr.success(response.data.success, 'Success');
+            $('#addBannerModal').modal('hide');
+                this.$inertia.visit('/member/profile');
+                this.loader = false;
+            }).catch(error => {
+                this.loader = false;
+                toastr.error(error.response.data.message, 'Error');
+
+            });
 
         },
 

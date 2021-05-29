@@ -21,7 +21,12 @@
                     </inertia-link>
                 </li>
                 <li class="nav-item">
-                    <inertia-link href="/dashboard" v-if="is('admin | head-of-ministry | ahom | super-admin')">
+                    <inertia-link href="/dashboard" v-if="is('admin | head-of-ministry | ahom')">
+                        <i class="feather icon-home"></i><span class="menu-title" data-i18n="">Ministry</span>
+                    </inertia-link>
+                </li>
+                <li class="nav-item">
+                    <inertia-link href="/dashboard" v-if="is('super-admin')">
                         <i class="feather icon-home"></i><span class="menu-title" data-i18n="">Dashboard</span>
                     </inertia-link>
                 </li>
@@ -30,12 +35,12 @@
                         <i class="feather icon-map"></i><span class="menu-title" data-i18n="">Extension</span>
                     </inertia-link>
                 </li>
-                <li class="nav-item" v-if="is('super-admin')">
+                <li class="nav-item" v-if="is('admin | head-of-ministry | ahom | super-admin')">
                         <inertia-link href="/members" class="">
                             <i class="feather icon-user-plus"></i><span class="menu-title" data-i18n="">Member</span>
                         </inertia-link>
                 </li>
-                <li class="nav-item" v-if="is('admin | head-of-ministry | ahom | follow-up')">
+                <li class="nav-item" v-if="is('follow-up')">
                         <inertia-link href="/members" class="">
                             <i class="feather icon-user-plus"></i><span class="menu-title" data-i18n="">Guest</span>
                         </inertia-link>
@@ -48,6 +53,11 @@
                 <li class="nav-item">
                     <inertia-link v-if="is('super-admin')" href="/event"><i class="feather icon-calendar"></i>
                         <span class="menu-title" data-i18n="">Event</span></inertia-link>
+                </li>
+
+                <li class="nav-item">
+                    <inertia-link v-if="is('super-admin | admin | follow-up | head-of-ministry | teaching-ministry | head-of-follow-up-ministry')" href="/report"><i class="feather icon-package"></i>
+                        <span class="menu-title" data-i18n="">Report</span></inertia-link>
                 </li>
 
                 <li class="nav-item">

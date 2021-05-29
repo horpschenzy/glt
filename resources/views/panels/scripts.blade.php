@@ -4,11 +4,11 @@
 <script src="/vendors/js/vendors.min.js"></script>
 <script src="/vendors/js/ui/prism.min.js"></script>
 
-<script src="{{secure_asset('vendors/js/extensions/jquery.steps.min.js')}}"></script>
-<script src="{{secure_asset('vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
+<script src="{{asset('vendors/js/extensions/jquery.steps.min.js')}}"></script>
+<script src="{{asset('vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
 <!-- Theme Scripts -->
-<script src="{{ secure_asset(('js/core/app-menu.js')) }}"></script>
-<script src="{{ secure_asset(('js/core/app.js')) }}"></script>
+<script src="{{ asset(('js/core/app-menu.js')) }}"></script>
+<script src="{{ asset(('js/core/app.js')) }}"></script>
 
 
 
@@ -36,8 +36,8 @@
 <!-- BEGIN: Page JS-->
 
 <!-- BEGIN: Page Vendor JS-->
-{{--<script src="{{secure_asset('vendors/js/extensions/jquery.steps.min.js')}}"></script>--}}
-{{--<script src="{{secure_asset('vendors/js/forms/validation/jquery.validate.min.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/js/extensions/jquery.steps.min.js')}}"></script>--}}
+{{--<script src="{{asset('vendors/js/forms/validation/jquery.validate.min.js')}}"></script>--}}
 
 {{--<!-- BEGIN: Page Vendor JS-->--}}
 <!-- END: Page Vendor JS-->
@@ -46,7 +46,7 @@
 <!-- BEGIN: Page JS-->
 <script src="/js/scripts/forms/wizard-steps.js"></script>
 <!-- END: Page JS-->
-{{--<script src="{{secure_asset('js/scripts/forms/wizard-steps.js')}}"></script>--}}
+{{--<script src="{{asset('js/scripts/forms/wizard-steps.js')}}"></script>--}}
 <!-- END: Page JS-->
 {{--  <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>  --}}
 <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
@@ -67,6 +67,8 @@
 <!-- Toast -->
 <script src="/vendors/js/extensions/toastr.min.js"></script>
 <script src="/js/scripts/extensions/toastr.js"></script>
+<script src="https://unpkg.com/vue-html-to-paper/build/vue-html-to-paper.js"></script>
+
 
 <!-- BEGIN: Page Apex JS-->
 <!-- <script src="vendors/js/charts/apexcharts.min.js"></script>

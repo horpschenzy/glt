@@ -20,7 +20,7 @@
             <div class="col-lg-4 col-md-6 col-sm-12">
                 <div class="card border-info text-center bg-transparent">
                     <div class="card-content">
-                        <img :src="'/images/logo/gltlogo.png'" :alt="'GLTCIS'" height="100" width="100" style="padding: 20px;" class="float-left mt-3 pl-2">
+                        <img :src="'jj'" :alt="'GLTCIS'" height="100" width="100" style="padding: 20px;" class="float-left mt-3 pl-2">
                         <div class="card-body">
                             <h4 class="card-title mt-3">GLT-CIS</h4>
                             <p class="card-text mb-25">Head-quarter</p>

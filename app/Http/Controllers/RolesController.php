@@ -31,11 +31,11 @@ class RolesController extends Controller
         }
         return response()->json([ 'success' => 'Role Created Successfully'], 200);
     }
-
+    
     public function assignPermission(Request $request)
     {
         if(count($request->permission) < 1){
-            return response()->json(['message' => 'Select a Permission for this Role'], 400);
+            return response()->json(['message' => 'Select a Permission for this Role'], 400);  
         }
         $getRole = Role::find($request->id);
         $getRole->syncPermissions($request->permission);

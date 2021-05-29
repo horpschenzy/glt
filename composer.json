@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2.5",
         "ahmedsaoud31/laravel-permission-to-vuejs": "dev-master",
+        "barryvdh/laravel-dompdf": "^0.9.0",
         "doctrine/dbal": "^2.11",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 use URL;
-use Auth;
 use App\User;
 use Validator;
 use Carbon\Carbon;
@@ -16,6 +15,7 @@ use App\Models\Extension;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Traits\NewNotificationTrait;
 use PragmaRX\Countries\Package\Countries;
@@ -25,6 +25,30 @@ class MemberController extends Controller
 {
 
     use NewNotificationTrait;
+
+    public function updateBanner(Request $request)
+    {
+        if($request->banner){
+            if (!str_contains($request->banner, '/images/profile/')){
+                $folderPath = "images/profile/";
+
+                $image_parts = explode(";base64,", $request->banner);
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $banner = $file = $folderPath . uniqid() . '.'.$image_type;
+
+                file_put_contents($file, $image_base64);
+           }
+
+        }
+        $member = Member::where('id', Auth::user()->member_id)
+                        ->update([
+                            'banner' => $banner,
+                        ]);
+        $this->saveNotification(Auth::user()->member_id, 'useractivities', 'You changed your Profile Banner','');
+        return response()->json(['success' => 'Banner Updated Successfully'], 200);
+    }
 
     public function registerdNonMembers()
     {

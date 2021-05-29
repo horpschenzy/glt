@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/members/guest/add', 'MemberController@createGuest');
 
     Route::get('/members', 'MemberController@index')->name('members');
+    Route::post('/update/banner', 'MemberController@updateBanner');
     Route::get('/registered-non-members', 'MemberController@registerdNonMembers');
     Route::post('/follow-up', 'MemberController@followUp');
 
@@ -57,7 +58,17 @@ Route::group(['middleware' => ['auth']], function() {
 
     //follow-up
     Route::post('/follow-up', 'MemberController@followUp');
+
+    //Report
     Route::get('/report', 'ReportController@index');
+    Route::get('/view/report', 'ReportController@viewReport');
+    Route::get('/report/delete/{id}', 'ReportController@deleteReport');
+    Route::get('/homreport/delete/{id}', 'ReportController@deleteCareReport');
+    Route::get('/ahomreport/delete/{id}', 'ReportController@deleteCareReport');
+    Route::post('/add/servicereport', 'ReportController@serviceReport');
+    Route::post('/add/carereport', 'ReportController@careReport');
+    Route::post('/service/report/{id}', 'ReportController@viewServiceReport');
+    Route::get('/generate/service/report/{date}/{service_type}', 'ReportController@generateServiceReport');
 
     //Ministries
     Route::get('/ministry', 'MinistryController@index')->name('ministry');

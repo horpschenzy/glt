@@ -44,7 +44,6 @@ class ExtensionController extends Controller
         }
 
         if ($request->id) {
-
             $image_parts = explode(";base64,", $request->ext_image);
             if(isset($image_parts[1])) {
                 if (!str_contains($request->ext_image, '/images/extension/')) {

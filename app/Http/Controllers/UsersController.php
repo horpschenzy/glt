@@ -54,7 +54,7 @@ class UsersController extends Controller
 
         if ($request->id) {
             $user  =  User::where('id',$request->id)->first();
-
+            
                         $user->update([
                             'name' => $request->name,
                             'email' => $request->email,
@@ -73,7 +73,7 @@ class UsersController extends Controller
                             $getNewRoleDetails = Role::where('id', $request->role_id)->first()->name;
                             $this->saveNotification($user->id, 'useractivities', 'You have been moved from '.$getOldRoleDetails.' to '.$getNewRoleDetails,'');
                         }
-                        $user->syncRoles($request->role_id);
+                        $user->syncRoles($request->role_id);            
             if($user->member_id){
                 Member::where('id', $user->member_id)->update([
                     'email_address' => $request->email,
@@ -99,7 +99,7 @@ class UsersController extends Controller
             $memberData['role_id'] =  $request->role_id;
             $saveMember = new Member($memberData);
             $saveMember->save();
-
+            
             $data['member_id'] = $saveMember->id;
             $data['password'] = bcrypt($request->password);
             $user = new User($data);

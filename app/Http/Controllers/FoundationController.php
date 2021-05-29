@@ -69,11 +69,14 @@ class FoundationController extends Controller
         if (session('extension_id') == 'glt') {
             Extension::changeLayout('foundation');
             $students = Student::with('user')->with('teachers')->get();
+            // dd($students);
+
             $allStudents = Member::with('user')->where('status','Foundation School')->get();
             $allTeachers = Teacher::with('user')->get();
         }else{
             Extension::changeLayout('foundation');
             $students = Student::with('user')->with('teachers')->where('extension_id',session('extension_id'))->get();
+            dd($students);
             $allStudents = Member::with('user')->where('status','Foundation School')->where('extension_id',session('extension_id'))->get();
             $allTeachers = Teacher::with('user')->where('extension_id',session('extension_id'))->get();
         }
