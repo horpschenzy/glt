@@ -28,6 +28,6 @@ class Testing extends Mailable
      */
     public function build()
     {
-        return $this->view('emails/registeration');
+        return $this->view('emails/testmail');
     }
 }
