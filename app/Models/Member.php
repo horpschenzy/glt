@@ -17,7 +17,7 @@ class Member extends Model
             'business_address', 'business_position', 'father_name', 'mother_name',
             'father_occupation', 'parent_email', 'parent_phone_number', 'parent_address',
             'parent_marital_status', 'ministry_id', 'unit_id',
-            'requirement','role_id', 'status', 'active', 'member_type', 'banner'
+            'requirement','role_id', 'status', 'active', 'member_type', 'banner', 'baptized'
         ];
     public function extension()
     {
@@ -53,6 +53,6 @@ class Member extends Model
     public function getDobAttribute($date)
     {
         return \Carbon\Carbon::create($date)->format('F d, Y');
-    }    
+    }
 
 }

@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/member/add/personal', 'MemberController@storePersonal');
     Route::post('/member/add/guest', 'MemberController@addGuest');
     Route::post('/member/guest/update', 'MemberController@updateGuest');
+    Route::post('/member/send/certificate', 'MemberController@sendCertificate');
 
     Route::post('/member/unit/update', 'MemberController@updateUnit');
     Route::get('/member/delete/{id}', 'MemberController@destroy');

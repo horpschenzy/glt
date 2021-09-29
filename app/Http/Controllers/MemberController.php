@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use URL;
+use PDF;
 use App\User;
 use Validator;
 use Carbon\Carbon;
@@ -25,6 +26,27 @@ class MemberController extends Controller
 {
 
     use NewNotificationTrait;
+
+    public function sendCertificate(Request $request)
+    {
+        $getMember = Member::where('id', $request->id);
+        if($getMember->first()){
+            $getMember->update(['baptized' => $request->baptized]);
+            if ($request->baptized == 'yes') {
+                $this->email = $getMember->first()->email_address;
+                $this->name = $getMember->first()->first_name;
+                $details['name'] = $getMember->first()->last_name.' '.$getMember->first()->first_name;
+                $pdf = PDF::loadView('emails.certificate', $details);
+                Mail::send('emails.baptism', $details , function($message)use($pdf){
+                    $message->to($this->email, $this->name)
+                            ->subject('GLT Baptismal Certificate')
+                            ->attachData($pdf->output(), "certificate.pdf");
+                });
+                $this->saveNotification($request->user_id, 'useractivities', 'Baptismal Certificate Sent Successfully','');
+            }
+            return response()->json(['success' => 'Baptismal Status Updated Successfully'],200);
+        }
+    }
 
     public function updateBanner(Request $request)
     {
@@ -59,7 +81,7 @@ class MemberController extends Controller
             $members = Member::with('extension')->with('unit')
             ->with('ministry')->with('user')
             ->with('role')->where('active', '0')->get();
-            
+
         }else{
             if (Auth::user()->roles[0]->name == 'follow-up') {
                 $users =  User::role('follow-up')->where('extension_id',session('extension_id'))->get();
@@ -70,7 +92,7 @@ class MemberController extends Controller
                                     }])
                                     ->where('id',Auth::id())->first();
                 $members = $userMembers->members;
-                
+
                 $stats['members'] = Member::where('extension_id',session('extension_id'))->where('active', 1)->pluck('id')->toArray();
                 $stats['new'] = Member::where('extension_id',session('extension_id'))->where('active','0')->where('status', 'Guest')->whereDate('created_at', Carbon::today())->count();
                 $stats['texts'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Text')->count();
@@ -98,7 +120,7 @@ class MemberController extends Controller
             $members = Member::with('extension')->with('unit')
             ->with('ministry')->with('user')
             ->with('role')->where('active', 1)->get();
-            
+
         }else{
             if (Auth::user()->roles[0]->name == 'follow-up') {
                 $users =  User::role('follow-up')->where('extension_id',session('extension_id'))->get();
@@ -109,7 +131,7 @@ class MemberController extends Controller
                                     }])
                                     ->where('id',Auth::id())->first();
                 $members = $userMembers->members;
-                
+
                 $stats['members'] = Member::where('extension_id',session('extension_id'))->where('active', 1)->pluck('id')->toArray();
                 $stats['new'] = Member::where('extension_id',session('extension_id'))->where('active', 1)->where('status', 'Guest')->whereDate('created_at', Carbon::today())->count();
                 $stats['texts'] = Feedback::whereIn('member_id',$stats['members'])->where('feedbackType','Text')->count();

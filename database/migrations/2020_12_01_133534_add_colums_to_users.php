@@ -30,9 +30,9 @@ class AddColumsToUsers extends Migration
         $member->address = 'i';
         $member->save();
 
-        $user = User::where('email','superadmin@me.com')->first();
-        $user->member_id = $member->id;
-        $user->save();
+        // $user = User::where('email','superadmin@me.com')->first();
+        // $user->member_id = $member->id;
+        // $user->save();
 
 
         echo "UPDATED SUCCESSFULLY";

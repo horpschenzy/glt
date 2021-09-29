@@ -107,19 +107,17 @@
                                 <table class="table table-hover zero-configuration">
                                     <thead>
                                         <tr>
-                                            <tr>
-                                                <th>Name</th>
-                                                <!-- <th>Image</th> -->
-                                                <th>Email</th>
-                                                <th >Phone number</th>
-                                                <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Extension</th>
-                                                <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Role</th>
-                                                <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Ministry</th>
-                                                <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Unit</th>
-                                                <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Progress</th>
-                                                <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Action</th>
+                                            <th>Name</th>
+                                            <!-- <th>Image</th> -->
+                                            <th>Email</th>
+                                            <th >Phone number</th>
+                                            <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Extension</th>
+                                            <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Role</th>
+                                            <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Ministry</th>
+                                            <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Unit</th>
+                                            <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Progress</th>
+                                            <th v-if="is('admin | head-of-ministry | ahom | super-admin')">Action</th>
 
-                                            </tr>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -158,6 +156,7 @@
                                                             </button>
                                                             <inertia-link v-if="is('admin | head-of-ministry | ahom | super-admin | follow-up')" :href="'/feedback/' + member.id" class="dropdown-item">View Feedback</inertia-link>
                                                             <inertia-link v-if="is('admin | head-of-ministry | ahom | super-admin')" :href="'/member/update/'+member.id" class="dropdown-item" >Edit Member</inertia-link>
+                                                            <button v-if="is('admin | head-of-ministry | ahom | super-admin')" class="dropdown-item" data-toggle="modal"  @click="currentRec(member)"  data-target="#baptism">Baptism</button>
                                                             <button v-if="is('admin | head-of-ministry | ahom | super-admin')" class="dropdown-item" @click="deleteMember(member.id);">Delete Member</button>
                                                         </div>
                                                     </div>
@@ -206,6 +205,40 @@
             </div>
         </div>
 
+        <div class="modal fade text-left" id="baptism" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel33">Baptism </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form class="form form-vertical" method="POST" action="#" @submit.prevent="baptism">
+                        <div class="modal-body row m-1">
+
+                                <div class="form-group col-12">
+                                    <label for="first-name-icon">Have you been baptized? </label>
+                                    <div class="position-relative has-icon-left">
+                                        <select class="form-control" v-model="form.baptized">
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                        <div class="form-control-position">
+                                            <i class="feather icon-home"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" v-model="form.id"  id="">
+                            </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary mr-1  waves-effect waves-light"> <i class="fa fa-circle-o-notch fa-spin mr-3" v-if="loader"></i>Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
 
     </layout>
@@ -233,6 +266,7 @@ export default {
                 user_id: '',
                 id: '',
             },
+            member: {}
         }
     },
     mounted () {
@@ -324,8 +358,38 @@ export default {
             this.addEdit = 'Edit';
             this.form.id = member.id;
             this.form.user_id = member.user.id;
+            this.form.baptized = member.baptized;
+            this.member = member;
 
         },
+
+        baptism(){
+            this.loader = true;
+            this.$swal({
+                    title: 'Send Baptismal Certificate?',
+                    text: 'You can\'t revert your action',
+                    type: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Send it!',
+                    cancelButtonText: 'No, Cancel!',
+                    showCloseButton: true,
+                    showLoaderOnConfirm: true
+                }).then((result) => {
+                    if(result.value) {
+                        axios.post("/member/send/certificate",this.form)
+                        .then(response => {
+                            toastr.success(response.data.success, 'Success');
+                            this.loader = false;
+                            $('#baptism').modal('hide');
+                            this.$inertia.visit('members');
+                        }).catch(error => {
+                            toastr.error(error.response.data.message, 'Error');
+                        });
+                    } else {
+                        this.$swal('Cancelled', 'Your file is still intact', 'info')
+                    }
+                })
+        }
     },
 
 
